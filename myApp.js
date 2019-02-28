@@ -3,7 +3,10 @@ var express = require('express');
 var app = express();
 
 // --> 7)  Mount the Logger middleware here
-
+app.use(function(req, res, next) {
+  console.log(`${req.method} ${req.path} - ${req.ip}`);
+  next();
+});
 
 // --> 11)  Mount the body-parser middleware  here
 
@@ -41,7 +44,12 @@ app.use(express.static(__dirname + "/public"));
 
 
 /** 8) Chaining middleware. A Time server */
-
+app.get('/now', function(req, res, next) {
+  req.time = new Date().toString();
+  next();
+}, function(req, res) {
+  res.json({"time": req.time});
+});
 
 /** 9)  Get input from client - Route parameters */
 
