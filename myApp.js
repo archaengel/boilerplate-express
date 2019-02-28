@@ -1,4 +1,4 @@
-
+var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
@@ -9,7 +9,7 @@ app.use(function(req, res, next) {
 });
 
 // --> 11)  Mount the body-parser middleware  here
-
+app.use(bodyParser.urlencoded({extended: false}));
 
 /** 1) Meet the node console. */
 console.log("Hello, World!");
@@ -58,8 +58,12 @@ app.get('/:word/echo', function(req, res) {
 
 /** 10) Get input from client - Query parameters */
 // /name?first=<firstname>&last=<lastname>
-app.route('/name').get(function(req, res) {
+app.route('/name')
+  .get(function(req, res) {
   res.json({"name": `${req.query.first} ${req.query.last}`});
+})
+.post(function(req, res) {
+  res.json({"name": `${req.body.first} ${req.body.last}`});
 });
 
 /** 11) Get ready for POST Requests - the `body-parser` */
